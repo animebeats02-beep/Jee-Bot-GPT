@@ -1,32 +1,40 @@
 import os
-import requests
 
-LLAMA_API_KEY = os.getenv("LLAMA_API_KEY")
+from telegram import Update
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes
+)
 
-def ask_ai(prompt):
+TOKEN = os.getenv("BOT_TOKEN")
 
-    headers = {
-        "Authorization": f"Bearer {LLAMA_API_KEY}",
-        "Content-Type": "application/json"
-    }
+async def start(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
 
-    payload = {
-        "model": "meta-llama/llama-3.3-70b-instruct",
-        "messages": [
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    }
-
-    response = requests.post(
-        "YOUR_LLAMA_ENDPOINT",
-        json=payload,
-        headers=headers,
-        timeout=60
+    await update.message.reply_text(
+        "Hello Nihal! JEE Study OS is running."
     )
 
-    data = response.json()
+def main():
 
-    return data["choices"][0]["message"]["content"]
+    app = (
+        Application
+        .builder()
+        .token(TOKEN)
+        .build()
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "start",
+            start
+        )
+    )
+
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
