@@ -1,6 +1,6 @@
 from database import init_db
 from bot import main
 
-init_db()
-
-main()
+if __name__ == "__main__":
+    init_db()
+    main()
